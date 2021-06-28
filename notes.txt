@@ -1,22 +1,22 @@
-Firmando y Verificando nuestro JWT
+Server-side vs Client-side sessions
 
--Crearemos un archivo donde probaremos la creación y verificación de un JWT.
+¿Qué es una sesión?: En terminos generales una sesion es una manera de preservar un estado deseado.
 
-Metodos usados de la librería JWT:
-  -sign: Para codificar el JWT. Recibe por param. el payload (objeto) y un secret. Nos retorna el token.
-  -verify: Para decodificarlo. Lleva como params el JWT a verificar, el secret, y un first error callback, que tiene
-    el token decodificado como 2do parametro. Cuando decodificamos un token, esto nos retorna el payload.
+¿Qué es una sesion del lado del servidor?
+  -La sesión en el lado del servidor suele ser una pieza de información que se guarda en memoria o en una base de datos y esta permite 
+    hacerle seguimiento a la información de autenticación, con el fin de identificar al usuario y determinar cuál es el estado de autenticación. 
+  -Mantener la sesión de esta manera en el lado del servidor es lo que se considera “stateful”, es decir que maneja un estado.
 
-Importante a notar de nuestro ejemplo:
-  -Destructuramos el elemento process.argv en un array, esto quiere decir que cada elemento del array tiene como valor
-    cada parte del comando que coloquemos en la terminal al correr un comando.
-  -Dejamos los 2 primeros espacios en blanco, porque son el "node [archivo]".
-  -Al correr el comando, debemos pasar los valores de las otras variables junto con el node.
-  -Al correr el sign estamos pasando un objeto, este es el payload, y 'sub' es un claim de este.
-  -Al correr el de sign, como ultimo argumento del comando pasamos el valor del claim, sí corremos verify, el token.
-  -Sign nos devuelve un JWT, y verify el payload.
-
--Sí vamos a la página https://jwt.io/ podemos verificar la firma de nuestro JWT:
-  1. En la parte derecha, en 'VERIFY SIGNATURE' hay un input para poner la firma de nuestro JWT.
-  2. En la parte izquierda, pegamos el JWT que queremos verificar.
-  -Sí funcionó bien, el mensaje de abajo tendrá un check en azul, de lo contrario, una x en rojo.
+¿Qué es una sesión del lado del cliente?
+  -Las SPA (Single-page apps) requieren una manera de saber si el usuario esta autenticado o no. 
+  -Pero esto no se puede hacer de una manera tradicional porque suelen ser muy desacopladas con el backend y no suelen refrescar la página 
+    como lo hacen las aplicaciones renderizadas en el servidor.
+  -JWT (JSON Web Token) es un mecanismo de autenticación sin estado, lo que conocemos como “stateless”. Lo que significa que no hay una 
+    sesión que exista del lado del servidor.
+  -La manera como se comporta la sesión del lado del cliente es:
+    .Cuando el usuario hace “login” agregamos una bandera para indicar que lo esta.
+    .En cualquier punto de la aplicación verificamos la expiración del token.
+    .Si el token expira, cambiamos la bandera para indicar que el usuario no está logueado.
+    .Se suele chequear cuando la ruta cambia.
+    .Si el token expiró lo redireccionamos a la ruta de “login” y actualizamos el estado como “logout”.
+    .Se actualiza la UI para mostrar que el usuario ha cerrado la sesión.
