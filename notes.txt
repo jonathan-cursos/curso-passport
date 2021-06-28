@@ -1,20 +1,28 @@
-Introducción a las sesiones
+Anatomía de un JWT
 
--Al ingresar a una página, se hace una petición HTTP.
--Diferentes peticiones HTTP no comparten info. entre sí.
--La manera de compartir info. entre estas peticiones es mediante el uso de sesiones.
+Un JWT se compone de 3 partes principales, generalmente divididas por un punto:
+  -Header.
+  -Payload.
+  -Signature.
 
-Sesión:
-  -Al ingresar por 1era vez a una página se inicia una sesión, aunque no estemos logeados.
-  -A medida que busquemos información, esta sesión almacenará nuestras preferencias.
-  -Esta sesión genera un ID que se almacena en una cookie.
-  -La cookie es un archivo que se almacena en el navegador, para que al cerrarlo, esta permanezca con el ID
-    de la sesión.
-  -Cuando cerramos el navegador, y volvamos, este sitio usara esta cookie para poder cargar los datos que
-    habiamos guardado.
-  -Cuando haya una autenticación, la sesión se almacena y se desarrolla directamente con el usuario.
-  -Cookie-session y express-session nos permiten manejar todo el tema de sesiones en express.
-    .cookie-session: Permite almacenar la sesión en la cookie.
-    .express-session: Permite almacenar la sesión en memoría, de lado del servidor.
-  -A la hora de escalar la sesión, es importante usar DB en memoría, como Redis.
-  -Esa es una ventaja de JWT, que no tiene estado, y por lo tanto, no necesita memoria.
+Header:
+  -typ: El tipo, que en este caso siempre será "JWT".
+  -alg: Algoritmo usado para encriptar el signature. Puede ser asincrono o sincrono.
+    .Asincronos: Usan 2 llaves de encriptación, la publica y la privada, donde la pública se usa para encriptar,
+      y la privada para desencriptar.
+    .Sinronos: Se usa la misma llave para encriptar y desencriptar.
+    .Ambos son seguros de usar, pero cambian en donde los vamos a usar:
+      -Asincronos: Deben usarse donde haya partes públicas que puedan tener acceso a esta llave.
+      -Sincronos: Solo deben usarse en sistemas como el backend.
+
+Payload:
+  -Donde guardamos toda la info. de nuestro usuario, incluso scopes de autorización.
+  -Este payload se compone de algo llamado 'claims', representados por 3 letras para mantener el JWT pequeño.
+  -Hay diferentes tipos de claims:
+    .Registered claims: Ya tienen una definición propia y deben respetarse.
+    .Public claims: Una lista de claims que pueden usar diferentes apps y ya están definidos.
+    .Private claims: Claims que nosotros definimos para nuestra app.
+
+Signature o firma:
+  -Se compone del header codificado + el payload codificado.
+  -A todo esto se le aplica el alg. de encriptación usando un 'Secret'.
