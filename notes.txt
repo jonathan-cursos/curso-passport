@@ -1,28 +1,23 @@
-Anatomía de un JWT
+Autenticación tradicional vs JWT
 
-Un JWT se compone de 3 partes principales, generalmente divididas por un punto:
-  -Header.
-  -Payload.
-  -Signature.
+Tradicional:
+  -Al autenticarnos, se crea una sesión, cuyo ID se envía al navegador.
+  -A partir de ahí, todas las peticiones tienen la cookie, que tiene almacenado el ID de la sesión
+     y este es usado para verificar la sesión previamente activa.
+  -Problemas:
+    .Uno de los problemas que hay, es que las SPA no pueden refrescarse, entonces no pueden saber sí hubo
+      cambios en la sesión.
+    .Otro problema es que las REST API no deben tener estado. Al usar sesiones generamos estados.
+    .Al usar arquitectura de microservicios, la sesión que solo existe en una maquina no fluye hacía los
+      otros clientes (problema que tuvimos con el PORTAL CESA).
+    .El control de acceso siempre requiere que vayamos a DB.
+    .Controlar el uso de memoria es dificil, ya que cada cliente que se conecta genera una sesión, aumentando
+      el uso de memoria.
 
-Header:
-  -typ: El tipo, que en este caso siempre será "JWT".
-  -alg: Algoritmo usado para encriptar el signature. Puede ser asincrono o sincrono.
-    .Asincronos: Usan 2 llaves de encriptación, la publica y la privada, donde la pública se usa para encriptar,
-      y la privada para desencriptar.
-    .Sinronos: Se usa la misma llave para encriptar y desencriptar.
-    .Ambos son seguros de usar, pero cambian en donde los vamos a usar:
-      -Asincronos: Deben usarse donde haya partes públicas que puedan tener acceso a esta llave.
-      -Sincronos: Solo deben usarse en sistemas como el backend.
-
-Payload:
-  -Donde guardamos toda la info. de nuestro usuario, incluso scopes de autorización.
-  -Este payload se compone de algo llamado 'claims', representados por 3 letras para mantener el JWT pequeño.
-  -Hay diferentes tipos de claims:
-    .Registered claims: Ya tienen una definición propia y deben respetarse.
-    .Public claims: Una lista de claims que pueden usar diferentes apps y ya están definidos.
-    .Private claims: Claims que nosotros definimos para nuestra app.
-
-Signature o firma:
-  -Se compone del header codificado + el payload codificado.
-  -A todo esto se le aplica el alg. de encriptación usando un 'Secret'.
+JWT:
+  -Al suceder la autenticación se firma un token.
+  -Este se envía al cliente, y debe ser almacenado en memoria o en una cookie.
+  -A partir de ahí, todas las peticiones llevan este token.
+  -Las SPA no requieren del backend para saber sí esta autenticado.
+  -El backend puede recibir multiples peticiones de multiples clientes y solo le interesa saber sí el
+    JWT está bien firmado.
