@@ -1,14 +1,7 @@
-Stack de seguridad moderno
+¿Qué es la autenticación y la autorización?
 
--Anteriormente, las compañías se comunicaban mediante una intranet.
--Una intranet es una red empresarial privada, que utiliza ciertos protocolos.
--Estos protocolos se 'quedaron cortos' con la revolución mobile.
--Por esto es que se remplazo con un stack de seguridad moderno.
+-Autenticación: Es asegurar de que un usuario existe, y que los datos colocados son los correctos.
+  .Sirve para validar la identidad de un usuario.
+  .Actualmente existe autenticación passwordless, donde se usan datos biometricos.
 
-El stack:
-  -JSON Web Tokens: Nos permite comunicarnos entre dos clientes de una manera más segura.
-  -OAuth 2.0: Un estándar de la industria que nos permite implementar autorización. No confundir autorización con
-    autenticación.
-  -OpenID Connect: Es una capa de autenticación que funciona por encima de Oauth 2.0.
-
--Más adelante verémos más a fondo cada parte de este stack.
+-Autorización: La autorización es la acción de permitir a un usuario acceso limitado a nuestro recursos.
