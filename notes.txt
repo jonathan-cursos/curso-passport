@@ -1,41 +1,14 @@
-¿Qué son las cookies y cómo implementar el manejo de sesión?
+Cookies vs Session Storage vs Local Storage
 
--Una cookie es un archivo creado por un sitio web que tiene pequeños pedazos de datos almacenados en él. 
--Su propósito es identificar al usuario mediante el almacenamiento de su historial.
+-El Local Storage tiene un almacenamiento máximo de 5MB y la información no se va con cada request al servidor, 
+  la información va a persistir aunque cerremos el navegador.
 
-Tipos de cookies:
-  -Cookie session: Son cookies que tienen un corto periodo de vida ya que son removidas cuando el navegador 
-    o la pestaña se cierran.
-  -Persistent cookies: Son las que se usan generalmente para guardar información de interés para el usuario.
-  -Secure cookies: Almacenan datos de forma cifradas para que terceros no puedan tener acceso a ellas, se 
-    suelen usar en conexiones HTTPS (Conexiones seguras).
+-El Session Storage es similar al Local Storage solo que la información está disponible por pestaña o por la ventana 
+  del navegador. La información estará disponible solo en esa pestaña.
 
--Hay leyes sobre cookies que debes seguir al pie de la letra:
-  .Avisarle al usuario que estás haciendo uso de cookies en tu sitio para guardar información
-  .Es necesario que el usuario de su consentimiento para manejar cookies en tu sitio.
+-Las Cookies tienen solo un almacenamiento de 4KB, se les puede establecer un tiempo de expiración, la desventaja de 
+  usarlo es que al hacer request de imágenes o datos las cookies van junto con la petición, lo que la hace
+  a la petición más pesada.
 
--Para ver el uso creamos un programa de node que hara lo siguiente:
-  .Crea la cookie en el navegador.
-  .Sí la cookie ya esta, el conteo de esa sessión aumentará cada vez que ingresemos al sitio o lo refresquemos.
-  .Sí eliminamos la cookie, desde los dev tools, el conteo volverá a iniciar en 1.
-  .Para eliminar esa cookie, nos vamos a application > Cookies > Click en la cookie > Click en la 'x'.
-  .Aquí lo que notamos es como la variable siempre mantiene su valor, aunque refresquemos la página, porque está
-    dentro de una cookie, pero sí la eliminamos, ese valor no existe, y por la lógica del programa, el conteo
-    comienza de nuevo.
-
-Pasos para hacer esto:
-  -Importamos express y express-session.
-  -Creamos la app de express.
-  -Creamos un middleware, que será la ejecucion del metodo express-session.
-  -Esta tiene un objeto de conf. que por ahora colocaremos estos:
-    .resave: false: No guarde la cookie cada vez que se haga un cambio
-    .saveUninitialized: false: Sí la cookie no se ha inicializado, no la guarde por defecto
-    .secret: "keyboard cat": Un string de al menos 256bits. Cuando la cookie es segura, la cifra con este secret.
-  -Ahora, dentro de la request, tendremos el elemento session, con los diferentes datos de la session.
-
-Logica del programa al hacer get de la raíz:
-  -Validamos que la sesión sea la misma (con un solo igual).
-  -Sí es correcto, el count de la sesión lo aumentamos en 1.
-  -De lo contrario, será por defecto 1.
-  -Con esto, podemos notar que sí la cookie sigue siendo la misma, aumenta el conteo.
-  -Sí vemos, al crear una cookie, sí tenemos la misma, el value no cambia.
+-Si la información no es sensible podemos almacenarla en Local Storage o en Session Storage.
+-Sí la info. es muy sensible como password o JWT, debemos usar cookie, pero teniendo en cuenta el flag http-only.
