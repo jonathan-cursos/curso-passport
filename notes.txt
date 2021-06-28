@@ -1,7 +1,20 @@
-¿Qué es la autenticación y la autorización?
+Introducción a las sesiones
 
--Autenticación: Es asegurar de que un usuario existe, y que los datos colocados son los correctos.
-  .Sirve para validar la identidad de un usuario.
-  .Actualmente existe autenticación passwordless, donde se usan datos biometricos.
+-Al ingresar a una página, se hace una petición HTTP.
+-Diferentes peticiones HTTP no comparten info. entre sí.
+-La manera de compartir info. entre estas peticiones es mediante el uso de sesiones.
 
--Autorización: La autorización es la acción de permitir a un usuario acceso limitado a nuestro recursos.
+Sesión:
+  -Al ingresar por 1era vez a una página se inicia una sesión, aunque no estemos logeados.
+  -A medida que busquemos información, esta sesión almacenará nuestras preferencias.
+  -Esta sesión genera un ID que se almacena en una cookie.
+  -La cookie es un archivo que se almacena en el navegador, para que al cerrarlo, esta permanezca con el ID
+    de la sesión.
+  -Cuando cerramos el navegador, y volvamos, este sitio usara esta cookie para poder cargar los datos que
+    habiamos guardado.
+  -Cuando haya una autenticación, la sesión se almacena y se desarrolla directamente con el usuario.
+  -Cookie-session y express-session nos permiten manejar todo el tema de sesiones en express.
+    .cookie-session: Permite almacenar la sesión en la cookie.
+    .express-session: Permite almacenar la sesión en memoría, de lado del servidor.
+  -A la hora de escalar la sesión, es importante usar DB en memoría, como Redis.
+  -Esa es una ventaja de JWT, que no tiene estado, y por lo tanto, no necesita memoria.
