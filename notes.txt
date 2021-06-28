@@ -1,23 +1,22 @@
-Autenticación tradicional vs JWT
+Firmando y Verificando nuestro JWT
 
-Tradicional:
-  -Al autenticarnos, se crea una sesión, cuyo ID se envía al navegador.
-  -A partir de ahí, todas las peticiones tienen la cookie, que tiene almacenado el ID de la sesión
-     y este es usado para verificar la sesión previamente activa.
-  -Problemas:
-    .Uno de los problemas que hay, es que las SPA no pueden refrescarse, entonces no pueden saber sí hubo
-      cambios en la sesión.
-    .Otro problema es que las REST API no deben tener estado. Al usar sesiones generamos estados.
-    .Al usar arquitectura de microservicios, la sesión que solo existe en una maquina no fluye hacía los
-      otros clientes (problema que tuvimos con el PORTAL CESA).
-    .El control de acceso siempre requiere que vayamos a DB.
-    .Controlar el uso de memoria es dificil, ya que cada cliente que se conecta genera una sesión, aumentando
-      el uso de memoria.
+-Crearemos un archivo donde probaremos la creación y verificación de un JWT.
 
-JWT:
-  -Al suceder la autenticación se firma un token.
-  -Este se envía al cliente, y debe ser almacenado en memoria o en una cookie.
-  -A partir de ahí, todas las peticiones llevan este token.
-  -Las SPA no requieren del backend para saber sí esta autenticado.
-  -El backend puede recibir multiples peticiones de multiples clientes y solo le interesa saber sí el
-    JWT está bien firmado.
+Metodos usados de la librería JWT:
+  -sign: Para codificar el JWT. Recibe por param. el payload (objeto) y un secret. Nos retorna el token.
+  -verify: Para decodificarlo. Lleva como params el JWT a verificar, el secret, y un first error callback, que tiene
+    el token decodificado como 2do parametro. Cuando decodificamos un token, esto nos retorna el payload.
+
+Importante a notar de nuestro ejemplo:
+  -Destructuramos el elemento process.argv en un array, esto quiere decir que cada elemento del array tiene como valor
+    cada parte del comando que coloquemos en la terminal al correr un comando.
+  -Dejamos los 2 primeros espacios en blanco, porque son el "node [archivo]".
+  -Al correr el comando, debemos pasar los valores de las otras variables junto con el node.
+  -Al correr el sign estamos pasando un objeto, este es el payload, y 'sub' es un claim de este.
+  -Al correr el de sign, como ultimo argumento del comando pasamos el valor del claim, sí corremos verify, el token.
+  -Sign nos devuelve un JWT, y verify el payload.
+
+-Sí vamos a la página https://jwt.io/ podemos verificar la firma de nuestro JWT:
+  1. En la parte derecha, en 'VERIFY SIGNATURE' hay un input para poner la firma de nuestro JWT.
+  2. En la parte izquierda, pegamos el JWT que queremos verificar.
+  -Sí funcionó bien, el mensaje de abajo tendrá un check en azul, de lo contrario, una x en rojo.
