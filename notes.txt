@@ -1,0 +1,14 @@
+Stack de seguridad moderno
+
+-Anteriormente, las compañías se comunicaban mediante una intranet.
+-Una intranet es una red empresarial privada, que utiliza ciertos protocolos.
+-Estos protocolos se 'quedaron cortos' con la revolución mobile.
+-Por esto es que se remplazo con un stack de seguridad moderno.
+
+El stack:
+  -JSON Web Tokens: Nos permite comunicarnos entre dos clientes de una manera más segura.
+  -OAuth 2.0: Un estándar de la industria que nos permite implementar autorización. No confundir autorización con
+    autenticación.
+  -OpenID Connect: Es una capa de autenticación que funciona por encima de Oauth 2.0.
+
+-Más adelante verémos más a fondo cada parte de este stack.
